@@ -2,7 +2,7 @@ import numpy as np
 import time
 from random_strategy import randomStrategy
 from random_strategy import greedyInitialStrategy
-from slave_problem_milp import slaveProblemMILPSolver
+from secondary_problem_milp import secondaryProblemMILPSolver
 import copy
 from both_detection_fn_signaling_uncertainty \
     import nonzeroCplexSolverFixedTarget
@@ -246,7 +246,7 @@ def nonzeroColumnMethodRelaxation(N,
                 count += 1
                 continue
             
-            #Else, use the dual variables/slave problem to find optimal
+            #Else, use the dual variables/secondary problem to find optimal
             objectiveHistoryList.append(obj)
             aas = cpx.solution.get_dual_values(['a{0}'.format(i) \
                                                for i in range(N)])
@@ -263,7 +263,7 @@ def nonzeroColumnMethodRelaxation(N,
             r = cpx.solution.get_dual_values('r') #(sum pe's = 1 constraint)
 
             aSet, bSet, cSet, dSet, eSet, fSet, newObjectiveValue = \
-                slaveProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l)
+                secondaryProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l)
             if keepStrategies:
                 strategies.append((aSet, bSet, cSet, dSet, eSet, fSet))
             else:
@@ -272,7 +272,7 @@ def nonzeroColumnMethodRelaxation(N,
 
             # =========== convergent criteria 2 ===============
             if (newObjectiveValue - r) < 0.01:
-                if MUTE != 1: print('slave problem objective value: '+\
+                if MUTE != 1: print('secondary problem objective value: '+\
                                     '{0}, r: {1}'.format(\
                       newObjectiveValue, r))
                 break
