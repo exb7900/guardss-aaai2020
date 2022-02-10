@@ -1,15 +1,16 @@
 import networkx as nx
 import cplex
 
-def slaveProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l):
+def secondaryProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l):
     """
     title::
-        slaveProblemMILPSolver
+        secondaryProblemMILPSolver
 
     description::
-        Solves the slave problem MILP to determine the next pure strategy to 
+        Solves the secondary problem MILP to determine the next pure strategy to 
         add for column generation. See relax.py for use. More details can be 
-        found in Section 5.2.
+        found in Section 5.2. Note that this has been renamed from the historical
+        terminology.
 
     attributes::
         aas
@@ -55,7 +56,7 @@ def slaveProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l):
             Drone (with patroller matched) locations for pure strategy to add 
             (in a set)
         objectiveValue
-            Optimal objective value from slave problem (helps determine 
+            Optimal objective value from secondary problem (helps determine 
             convergence)
     
     author::
@@ -92,12 +93,12 @@ def slaveProblemMILPSolver(aas, bs, cs, ds, es, fs, G, N, k, l):
     numEdges = len(Gdir_edges)
 
     #Objective function. Equation 10 (and 19 & 20)
-    names2 = ["aslave{0}".format(i+1) for i in range(N)] + \
-             ["bslave{0}".format(i+1) for i in range(N)] + \
-             ["cslave{0}".format(i+1) for i in range(N)] + \
-             ["dslave{0}".format(i+1) for i in range(N)] + \
-             ["eslave{0}".format(i+1) for i in range(N)] + \
-             ["fslave{0}".format(i+1) for i in range(N)] + \
+    names2 = ["asecondary{0}".format(i+1) for i in range(N)] + \
+             ["bsecondary{0}".format(i+1) for i in range(N)] + \
+             ["csecondary{0}".format(i+1) for i in range(N)] + \
+             ["dsecondary{0}".format(i+1) for i in range(N)] + \
+             ["esecondary{0}".format(i+1) for i in range(N)] + \
+             ["fsecondary{0}".format(i+1) for i in range(N)] + \
              ["ye{0}".format(i+1) for i in range(numEdges)]
     cpx2.variables.add(obj=aas + bs + cs + ds + es + fs + [0]*numEdges,
                        lb=[0]*(6*N+numEdges),
