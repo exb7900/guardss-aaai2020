@@ -207,7 +207,7 @@ def nonzeroCplexSolverFixedTarget(strategies,
             if MUTE != 1: print('objectiveValueConf', list(objectiveValueCoef))
 
         #Bounds (Equations 5, 6, 8, 9 in Appendix LP and 19 & 20 in Section 5.2 for relaxed)
-        #NOTE: Not binary like in slave_problem_milp because it's a relaxation.
+        #NOTE: Not binary like in secondary_problem_milp because it's a relaxation.
         if mode == 'normal':
             lowerBounds = [0.0] * (15*N + strategiesSize)
             upperBounds = [1] * (12*N)
@@ -350,7 +350,7 @@ def nonzeroCplexSolverFixedTarget(strategies,
                     senses=['E'],
                     rhs=[0])
 
-            #Equation 16.5 in slave_problem_milp.py (but x instead of v).
+            #Equation 16.5 in secondary_problem_milp.py (but x instead of v).
             for j in range(N):
                 #Get indices of the in edges in y for first argument.
                 iI = list(Gdir.in_edges(j))
